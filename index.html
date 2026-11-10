@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis 15 Años - Angie Siciliano</title>
+  <!--<link rel="icon" href="./assets/15th.ico" type="image/x-icon">-->
+  <link rel="icon" type="image/png" href="./assets/15th.png">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide@1/dist/umd/lucide.min.js"></script>
+  
+  <!-- Canvas Confetti for RSVP -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  
+  <!-- Capcut Editor Runtime -->
+  <script src="https://sf16-web-login-neutral.capcutstatic.com/obj/capcut-web-login-static/ies/ccweb/ai_design_artifact_sdk/base-runtime.0.1.0.prod.min.js"></script>
+
+  <style>
+    :root {
+      --color-lavender-deep: #4c3568;
+      --color-lavender-main: #7a5ba0;
+      --color-lavender-soft: #b8a5d3;
+      --color-lavender-light: #f4effa;
+      --color-gold: #d4af37;
+      --color-gold-light: #fdf5d7;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #f7f3fb;
+      background-image: 
+        radial-gradient(circle at 10% 10%, rgba(212, 175, 55, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 90%, rgba(184, 165, 211, 0.15) 0%, transparent 50%),
+        url('./assets/bg-lavender-floral.png');
+      background-size: cover, cover, cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: #3b2d54;
+      overflow-x: hidden;
+    }
+
+    .font-script {
+      font-family: 'Great Vibes', cursive;
+    }
+
+    .font-serif-luxury {
+      font-family: 'Playfair Display', serif;
+    }
+
+    .font-cormorant {
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    /* 3D Envelope Styles (Totalmente Responsivo para Móviles y Escritorio) */
+    .perspective-container {
+      perspective: 1200px;
+    }
+
+    .envelope-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      aspect-ratio: 440 / 300;
+      margin: 0 auto;
+      transform-style: preserve-3d;
+      transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .envelope-back {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #705296 0%, #573c7b 100%);
+      border-radius: 12px;
+      box-shadow: 0 25px 50px -12px rgba(67, 40, 102, 0.45), 0 0 0 1px rgba(212, 175, 55, 0.35);
+      overflow: hidden;
+    }
+
+    /* Inner Envelope Lining */
+    .envelope-lining {
+      position: absolute;
+      inset: 6px;
+      background-image: url('./assets/bg-lavender-floral.png');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.85;
+      border-radius: 8px;
+    }
+
+    /* Inside card preview before pull */
+    .envelope-card-inner {
+      position: absolute;
+      top: 10px;
+      bottom: 10px;
+      left: 12px;
+      right: 12px;
+      background: linear-gradient(180deg, #ffffff 0%, #faf6fe 100%);
+      border-radius: 10px;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      box-shadow: 0 8px 24px rgba(60, 30, 90, 0.2);
+      transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .envelope-wrapper.opened .envelope-card-inner {
+      transform: translateY(-80%) scale(1.04);
+      opacity: 0.95;
+    }
+
+    /* Envelope Bottom/Side Flaps con clip-path */
+    .envelope-pocket {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+    }
+
+    .envelope-pocket-left {
+      position: absolute;
+      inset: 0;
+      filter: drop-shadow(4px 0 6px rgba(45, 20, 75, 0.2));
+    }
+    .envelope-pocket-left::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: #75559c;
+      clip-path: polygon(0 0, 50% 50%, 0 100%);
+      border-radius: 12px 0 0 12px;
+    }
+
+    .envelope-pocket-right {
+      position: absolute;
+      inset: 0;
+      filter: drop-shadow(-4px 0 6px rgba(45, 20, 75, 0.2));
+    }
+    .envelope-pocket-right::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: #7e5ea5;
+      clip-path: polygon(100% 0, 50% 50%, 100% 100%);
+      border-radius: 0 12px 12px 0;
+    }
+
+    .envelope-pocket-bottom {
+      position: absolute;
+      inset: 0;
+      filter: drop-shadow(0 -4px 8px rgba(45, 20, 75, 0.25));
+    }
+    .envelope-pocket-bottom::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: #6c4c92;
+      clip-path: polygon(0 100%, 50% 45%, 100% 100%);
+      border-radius: 0 0 12px 12px;
+    }
+
+    /* Top Flap with 3D Rotation */
+    .envelope-top-flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 58.33%;
+      transform-origin: top center;
+      transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 30;
+      filter: drop-shadow(0 6px 12px rgba(40, 15, 70, 0.35));
+    }
+    .envelope-top-flap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: #8463ac;
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      border-radius: 12px 12px 0 0;
+      transition: background-color 0.9s ease;
+    }
+
+    .envelope-wrapper.opened .envelope-top-flap {
+      transform: rotateX(180deg);
+      z-index: 5;
+    }
+    .envelope-wrapper.opened .envelope-top-flap::after {
+      background-color: #634586;
+    }
+
+    /* Wax Seal / Brooch */
+    .butterfly-seal {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 40;
+      cursor: pointer;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease, filter 0.3s;
+    }
+
+    .butterfly-seal:hover {
+      transform: translate(-50%, -50%) scale(1.12);
+      filter: drop-shadow(0 0 16px rgba(212, 175, 55, 0.8));
+    }
+
+    .envelope-wrapper.opened .butterfly-seal {
+      transform: translate(-50%, -100%) scale(1.4);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Glow pulse animation */
+    @keyframes pulse-glow {
+      0%, 100% {
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.4), 0 0 30px rgba(184, 165, 211, 0.3);
+      }
+      50% {
+        box-shadow: 0 0 25px rgba(212, 175, 55, 0.8), 0 0 45px rgba(184, 165, 211, 0.6);
+      }
+    }
+
+    .pulse-glow {
+      animation: pulse-glow 2.5s infinite ease-in-out;
+    }
+
+    /* Gold foil text & border gradient */
+    .gold-foil {
+      background: linear-gradient(135deg, #dfba4a 0%, #fef3c7 40%, #c99e28 70%, #fef3c7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Subtle float animation */
+    @keyframes floating {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .animate-float {
+      animation: floating 4s ease-in-out infinite;
+    }
+
+    /* Particle Canvas */
+    #particle-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Luxury card shadow and glassmorphism */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      box-shadow: 0 15px 35px -5px rgba(85, 45, 125, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+    }
+
+    /* Scroll reveal transitions */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body class="relative min-h-screen text-[#3c2954] antialiased selection:bg-[#c4a9e6] selection:text-[#2d1b46]">
+
+  <!-- Música de fondo (archivo en assets/music.mp3) -->
+  <audio id="bg-audio" src="./assets/music.mp3" loop preload="auto"></audio>
+
+  <!-- Background Canvas for Floating Gold & Lavender Petals -->
+  <canvas id="particle-canvas"></canvas>
+
+  <!-- Ambient Sound Control Bar (Sticky) -->
+  <div class="fixed top-4 right-4 z-50 flex items-center gap-2">
+    <button id="music-btn" class="flex items-center gap-2 px-3.5 py-2 rounded-full bg-white/90 backdrop-blur-md shadow-lg border border-[#d4af37]/40 text-[#54387a] hover:bg-[#f6effe] transition text-xs font-medium cursor-pointer">
+      <i data-lucide="music" class="w-4 h-4 text-[#d4af37] animate-pulse"></i>
+      <span id="music-text">Música</span>
+    </button>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 1. INITIAL HERO & ENVELOPE OPENING VIEW -->
+  <!-- ========================================== -->
+  <section id="envelope-section" class="min-h-screen flex flex-col items-center justify-center relative px-4 py-12 z-10 transition-opacity duration-2000">
+    
+    <!-- Header Title -->
+    <div class="text-center mb-8 max-w-lg animate-float">
+      <p class="text-xs uppercase tracking-[0.35em] text-[#7d5c9f] font-semibold mb-2">Invitación Especial</p>
+      <h1 class="font-script text-5xl md:text-6xl text-[#4a2e6e] mb-1 drop-shadow-sm">Mis Quince Años</h1>
+      <p class="font-serif-luxury text-xl text-[#7a5ba0] italic tracking-wide">Angie Siciliano</p>
+    </div>
+
+    <!-- 3D Interactive Envelope -->
+    <div class="perspective-container w-full max-w-md px-2">
+      <div id="envelope" class="envelope-wrapper">
+        
+        <!-- Envelope Interior Background -->
+        <div class="envelope-back">
+          <div class="envelope-lining"></div>
+        </div>
+
+        <!-- Inner Invitation Card (Peeking) -->
+        <div class="envelope-card-inner">
+          <div class="border border-[#d4af37]/40 w-full h-full p-2 sm:p-4 flex flex-col items-center justify-center rounded-lg bg-white/70">
+            <span class="font-script text-2xl sm:text-3xl text-[#5e3d88]">Angie Siciliano</span>
+            <div class="w-12 h-0.5 bg-gradient-to-r from-transparent via-[#d4af37] to-transparent my-1 sm:my-2"></div>
+            <p class="font-cormorant text-xs sm:text-base text-[#4a3266] italic leading-tight sm:leading-normal">Te invito a mi acción de gracias en una tarde de adoración a Dios</p>
+            <p class="text-[9px] sm:text-[11px] uppercase tracking-widest text-[#8463ac] font-semibold mt-1 sm:mt-3">Viernes • 25 de Diciembre</p>
+          </div>
+        </div>
+
+        <!-- 3D Pocket Flaps (Left, Right, Bottom) -->
+        <div class="envelope-pocket">
+          <div class="envelope-pocket-left"></div>
+          <div class="envelope-pocket-right"></div>
+          <div class="envelope-pocket-bottom"></div>
+        </div>
+
+        <!-- 3D Top Flap -->
+        <div class="envelope-top-flap"></div>
+
+        <!-- Luminous Butterfly Seal Button -->
+        <div id="open-envelope-btn" class="butterfly-seal group">
+          <div class="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full flex items-center justify-center p-2">
+            <!-- Glowing ring effect -->
+            <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-[#d4af37] via-[#c4a9e6] to-[#d4af37] opacity-60 blur-md group-hover:opacity-90 transition"></div>
+            <div class="absolute inset-1 rounded-full bg-[#3d265a] border-2 border-[#d4af37] shadow-inner"></div>
+            
+            <!-- Butterfly image -->
+            <img src="./assets/butterfly-seal-transparent.png" alt="Broche de Mariposa" class="relative z-10 w-12 h-12 sm:w-16 sm:h-16 object-contain transform group-hover:scale-110 transition duration-300">
+          </div>
+          
+          <div class="mt-1 sm:mt-2 text-center whitespace-nowrap">
+            <span class="inline-block px-2.5 py-0.5 sm:px-3 sm:py-1 bg-[#2c1743]/90 text-[#fbf7dc] border border-[#d4af37]/60 text-[9px] sm:text-[10px] uppercase tracking-[0.2em] rounded-full shadow-lg font-medium animate-pulse">
+              Toca para abrir
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Instruction message below -->
+    <div class="text-center mt-8 text-xs text-[#735496] max-w-xs">
+      <p class="flex items-center justify-center gap-1.5 font-medium">
+        <i data-lucide="sparkles" class="w-3.5 h-3.5 text-[#d4af37]"></i>
+        Haz clic en el broche de mariposa para abrir el sobre
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ========================================== -->
+  <!-- 2. FULL UNVEILED INVITATION CONTENT -->
+  <!-- ========================================== -->
+  <main id="invitation-content" class="hidden relative z-10 max-w-3xl mx-auto px-4 pb-24 pt-6">
+
+    <!-- Re-open / Mini Banner -->
+    <div class="flex justify-between items-center mb-6 px-2">
+      <button id="reopen-envelope-btn" class="text-xs flex items-center gap-1.5 text-[#704f93] hover:text-[#422268] bg-white/80 backdrop-blur-sm px-3 py-1.5 rounded-full border border-[#d4af37]/30 shadow-sm cursor-pointer transition">
+        <i data-lucide="mail" class="w-3.5 h-3.5 text-[#d4af37]"></i>
+        <span>Cerrar sobre</span>
+      </button>
+
+      <span class="text-xs uppercase tracking-widest text-[#704f93] font-semibold flex items-center gap-1">
+        <i data-lucide="sparkle" class="w-3 h-3 text-[#d4af37]"></i>
+        XV Años
+      </span>
+    </div>
+
+    <!-- Hero Card -->
+    <div class="glass-card rounded-3xl p-8 md:p-12 text-center mb-10 relative overflow-hidden reveal active">
+      <!-- Decorative background accent -->
+      <div class="absolute -top-24 -right-24 w-60 h-60 bg-[#d9c4f5]/40 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-24 -left-24 w-60 h-60 bg-[#fde68a]/20 rounded-full blur-3xl pointer-events-none"></div>
+      
+      <!-- Top Monogram -->
+      <div class="inline-flex items-center justify-center w-80 h-20 rounded-full border border-[#d4af37] bg-gradient-to-b from-white to-[#f4effa] shadow-md mb-6">
+        <span class="font-serif-luxury text-2xl font-bold text-[#5c3a85]">Familia Siciliano Campos</span>
+      </div>
+
+      <p class="text-xs uppercase tracking-[0.4em] text-[#7e5ea5] font-semibold mb-3">Tiene la dicha de invitarle a celebrar los 15 años de</p>
+      <h1 class="font-script text-6xl md:text-8xl text-[#4a2873] mb-4">Angie Liseth Siciliano Campos</h1>
+      <p class="font-serif-luxury text-xl md:text-2xl text-[#825fa8] italic mb-6">Mis Quince Años</p>
+
+      <div class="flex items-center justify-center gap-3 my-6">
+        <div class="h-[1px] w-16 bg-gradient-to-r from-transparent to-[#d4af37]"></div>
+        <i data-lucide="crown" class="w-5 h-5 text-[#d4af37]"></i>
+        <div class="h-[1px] w-16 bg-gradient-to-l from-transparent to-[#d4af37]"></div>
+      </div>
+
+      <!-- Emotional Quote -->
+      <p class="font-cormorant text-lg md:text-xl text-[#4f3869] italic max-w-lg mx-auto leading-relaxed">
+        "Hay momentos en la vida que son irrepetibles, pero compartirlos con quienes más amamos los convierte en recuerdos eternos."
+      </p>
+		<p class="font-cormorant text-lg md:text-xl text-[#4f3869] italic max-w-lg mx-auto leading-relaxed">
+        «Él ha hecho todo hermoso en su tiempo; </br> y ha puesto eternidad en su corazón» </br> — Eclesiastés 3:11
+      </p>
+      <div class="mt-8 inline-block px-6 py-2.5 rounded-full bg-gradient-to-r from-[#6e4b93] to-[#512f78] text-white shadow-lg text-sm font-medium tracking-wide border border-[#d4af37]/50">
+        ✨ Viernes, 25 de Diciembre de 2026
+      </div>
+    </div>
+
+    <!-- Parents & Godparents Section -->
+    <div class="grid md:grid-cols-1 gap-6 mb-10">
+      <div class="glass-card rounded-2xl p-6 text-center reveal active">
+        <div class="w-10 h-10 mx-auto rounded-full bg-[#f3ecfb] border border-[#d4af37]/40 flex items-center justify-center mb-3">
+          <i data-lucide="heart" class="w-5 h-5 text-[#8862b3]"></i>
+        </div>
+        <h2 class="font-serif-luxury text-lg font-bold text-[#492c73] mb-1">Con la bendición de mis Padres</h2>
+        <p class="font-cormorant text-2xl text-[#5d417e] italic">José Elias Siciliano Medina</p>
+        <p class="font-cormorant text-2xl text-[#5d417e] italic">Lisseth Verali Campos de Siciliano</p>
+      </div>
+
+     <!-- <div class="glass-card rounded-2xl p-6 text-center reveal active">
+        <div class="w-10 h-10 mx-auto rounded-full bg-[#f3ecfb] border border-[#d4af37]/40 flex items-center justify-center mb-3">
+          <i data-lucide="sparkles" class="w-5 h-5 text-[#d4af37]"></i>
+        </div>
+        <h3 class="font-serif-luxury text-lg font-bold text-[#492c73] mb-1">Y el honor de mis Padrinos</h3>
+        <p class="font-cormorant text-lg text-[#5d417e] italic">Nury Siciliano</p>
+        <p class="font-cormorant text-lg text-[#5d417e] italic">& Sara Beatriz</p>
+      </div>-->
+    </div>
+
+
+    <!-- Event Locations (Ceremony & Reception) -->
+    <div class="mb-10">
+      <div class="text-center mb-6 reveal active">
+        <p class="text-xs uppercase tracking-[0.3em] text-[#79579f] font-semibold">¿Dónde & Cuándo?</p>
+        <h2 class="font-serif-luxury text-3xl text-[#43266b]">Lugares del Evento</h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        <!-- Ceremony -->
+        <div class="glass-card rounded-2xl p-6 flex flex-col justify-between reveal active">
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="p-3 bg-[#e8dcfa] rounded-xl text-[#623c91]">
+                <i data-lucide="church" class="w-6 h-6"></i>
+              </div>
+              <div>
+                <span class="text-[11px] uppercase tracking-wider text-[#7e5ea5] font-bold">Iglesia Principe de Paz</span>
+                <h3 class="font-serif-luxury text-xl font-bold text-[#3d2360]">Col. Buenos aires 2</h3>
+              </div>
+            </div>
+
+            <div class="space-y-2 text-sm text-[#50366f] mb-6">
+              <p class="flex items-center gap-2">
+                <i data-lucide="clock" class="w-4 h-4 text-[#d4af37]"></i>
+                <span class="font-medium">04:00 Horas</span>
+              </p>
+              <p class="flex items-start gap-2">
+                <i data-lucide="map-pin" class="w-4 h-4 text-[#d4af37] shrink-0 mt-0.5"></i>
+                <span>Calle la libertad</span>
+              </p>
+            </div>
+          </div>
+
+          <a href="https://maps.app.goo.gl/qjoG5B8Y69jm62rQ7" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 rounded-xl border border-[#7f5fa6] text-[#5e3c8a] hover:bg-[#7f5fa6] hover:text-white transition text-center font-medium text-xs flex items-center justify-center gap-2 cursor-pointer shadow-sm">
+            <i data-lucide="navigation" class="w-4 h-4"></i>
+            <span>Ver en Google Maps</span>
+          </a>
+        </div>
+
+        <!-- Reception -->
+        <div class="glass-card rounded-2xl p-6 flex flex-col justify-between reveal active">
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="p-3 bg-[#e8dcfa] rounded-xl text-[#623c91]">
+                <i data-lucide="glass-water" class="w-6 h-6"></i>
+              </div>
+              <div>
+                <span class="text-[11px] uppercase tracking-wider text-[#7e5ea5] font-bold">Recepción</span>
+                <h3 class="font-serif-luxury text-xl font-bold text-[#3d2360]">Frente a casa de mi abuelo Daniel Siciliano</h3>
+              </div>
+            </div>
+
+            <div class="space-y-2 text-sm text-[#50366f] mb-6">
+             <!-- <p class="flex items-center gap-2">
+                <i data-lucide="clock" class="w-4 h-4 text-[#d4af37]"></i>
+                <span class="font-medium">06:30 pm</span>
+              </p>-->
+              <p class="flex items-start gap-2">
+                <i data-lucide="map-pin" class="w-4 h-4 text-[#d4af37] shrink-0 mt-0.5"></i>
+                <span>Casa #23 frente a Iglesia Principe de Paz</span>
+              </p>
+            </div>
+          </div>
+
+          <a href="https://maps.app.goo.gl/qjoG5B8Y69jm62rQ7" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#704d96] to-[#512f78] text-white hover:opacity-95 transition text-center font-medium text-xs flex items-center justify-center gap-2 cursor-pointer shadow-md">
+            <i data-lucide="navigation" class="w-4 h-4"></i>
+            <span>Cómo Llegar a la Recepción</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Itinerary / Timeline-->
+   <!-- <div class="glass-card rounded-2xl p-6 md:p-8 mb-10 reveal active">
+      <div class="text-center mb-8">
+        <p class="text-xs uppercase tracking-[0.3em] text-[#79579f] font-semibold">Programa</p>
+        <h2 class="font-serif-luxury text-2xl text-[#43266b]">Culto de Acción de gracias</h2>
+      </div> -->
+
+      <!-- <div class="relative pl-6 space-y-6 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-gradient-to-b before:from-[#cbb4e9] before:via-[#d4af37] before:to-[#cbb4e9]">
+-->        
+        <!-- Timeline Item 1 -->
+   <!--     <div class="relative flex items-start gap-4">
+          <div class="absolute -left-6 top-1 w-4 h-4 rounded-full bg-[#6a4692] border-2 border-white shadow"></div>
+          <div>
+            <span class="text-xs font-bold text-[#d4af37] tracking-wider">02:00 PM</span>
+            <h4 class="font-serif-luxury font-bold text-[#3e2461]">Inicio de culto</h4>
+            <p class="text-xs text-[#624783]">Acción de gracias en compañía de seres queridos e hermanos de la congregación</p>
+          </div>
+        </div> -->
+        <!-- Timeline Item 2 -->
+        <!-- <div class="relative flex items-start gap-4">
+          <div class="absolute -left-6 top-1 w-4 h-4 rounded-full bg-[#825fa8] border-2 border-white shadow"></div>
+          <div>
+            <span class="text-xs font-bold text-[#d4af37] tracking-wider">05:30 PM</span>
+            <h4 class="font-serif-luxury font-bold text-[#3e2461]">Recepción & Bienvenida</h4>
+            <p class="text-xs text-[#624783]">Llegada a recepción, sesión de fotos y bienvenida</p>
+          </div>
+        </div> -->
+
+        <!-- Timeline Item 3 -->
+		<!--
+        <div class="relative flex items-start gap-4">
+          <div class="absolute -left-6 top-1 w-4 h-4 rounded-full bg-[#6a4692] border-2 border-white shadow"></div>
+          <div>
+            <span class="text-xs font-bold text-[#d4af37] tracking-wider">06:00 PM</span>
+            <h4 class="font-serif-luxury font-bold text-[#3e2461]">Entrada Triunfal quinceañera</h4>
+            <p class="text-xs text-[#624783]">El emotivo acompañamiento el padre, y cambio de zapatillas.</p>
+          </div>
+        </div> -->
+
+        <!-- Timeline Item 4 -->
+       <!-- <div class="relative flex items-start gap-4">
+          <div class="absolute -left-6 top-1 w-4 h-4 rounded-full bg-[#825fa8] border-2 border-white shadow"></div>
+          <div>
+            <span class="text-xs font-bold text-[#d4af37] tracking-wider">07:00 PM</span>
+            <h4 class="font-serif-luxury font-bold text-[#3e2461]">Cena de Gala & Brindis</h4>
+            <p class="text-xs text-[#624783]">Banquete especial y palabras de agradecimiento.</p>
+          </div>
+        </div> -->
+
+        <!-- Timeline Item 5 -->
+       <!-- <div class="relative flex items-start gap-4">
+          <div class="absolute -left-6 top-1 w-4 h-4 rounded-full bg-[#d4af37] border-2 border-white shadow"></div>
+          <div>
+            <span class="text-xs font-bold text-[#d4af37] tracking-wider">07:30 PM</span>
+            <h4 class="font-serif-luxury font-bold text-[#3e2461]">Apertura de Pista & Fiesta</h4>
+            <p class="text-xs text-[#624783]">¡Música en vivo, sorpresas y más!</p>
+          </div>
+        </div>
+
+      </div> 
+    </div>-->
+
+
+    <!-- Dress Code & Gift Info -->
+    <div class="grid md:grid-cols-1 gap-6 mb-10">
+      
+      <!-- Dress Code -->
+      <!-- <div class="glass-card rounded-2xl p-6 text-center reveal active">
+        <div class="w-12 h-12 mx-auto rounded-full bg-[#f4effa] border border-[#d4af37]/40 flex items-center justify-center mb-3">
+          <i data-lucide="sparkles" class="w-6 h-6 text-[#7b59a3]"></i>
+        </div>
+        <h3 class="font-serif-luxury text-lg font-bold text-[#42266b] mb-1">Código de Vestimenta</h3>
+        <p class="text-sm font-semibold text-[#6e4b95] mb-2 uppercase tracking-wider">Formal, casual</p>
+        <p class="text-xs text-[#543b74] leading-relaxed mb-4">
+          Mujeres: Vestido, falda para la ocasión.<br>
+          Hombres: Traje formal / Casual.
+        </p>
+        <div class="inline-block p-2 rounded-lg bg-[#efe7f9] border border-[#d4af37]/30 text-[11px] text-[#4d2f75] font-medium">
+          💜 <i>Nota especial:</i> Los tonos lila y morado están reservados exclusivamente para la Quinceañera.
+        </div>
+      </div>-->
+
+      <!-- Gifts / Lluvia de Sobres -->
+      <div class="glass-card rounded-2xl p-6 text-center reveal active">
+        <div class="w-12 h-12 mx-auto rounded-full bg-[#f4effa] border border-[#d4af37]/40 flex items-center justify-center mb-3">
+          <i data-lucide="gift" class="w-6 h-6 text-[#7b59a3]"></i>
+        </div>
+        <h1 class="font-serif-luxury text-xl font-bold text-[#42266b] mb-1">Mesa de Regalos</h1>
+        <h2 class="text-sm font-semibold text-[#6e4b95] mb-2 uppercase tracking-wider">Lluvia de Sobres</h2>
+        <p class="text-xl text-[#543b74] leading-relaxed mb-4">
+          Tu presencia es mi mayor regalo, si deseas hacerme un presente, contaremos con un buzón para sobres en la recepción.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- RSVP Form -->
+   <!-- <div id="rsvp-section" class="glass-card rounded-3xl p-6 md:p-10 mb-10 reveal active border-2 border-[#d4af37]/50 relative overflow-hidden">
+      
+      <div class="text-center mb-8">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#f2eafb] text-[#6b4793] text-[11px] font-bold uppercase tracking-widest border border-[#d4af37]/40 mb-2">
+          <i data-lucide="check-circle" class="w-3.5 h-3.5 text-[#d4af37]"></i>
+          Confirmación
+        </span>
+        <h2 class="font-serif-luxury text-3xl text-[#43266b] mb-2">Confirma tu Asistencia</h2>
+        <p class="text-xs text-[#634884] max-w-md mx-auto">
+          Por favor confirma antes del <strong>15 de Diciembre de 2026</strong> para reservar tu lugar en esta tarde/noche especial.
+        </p>
+      </div>
+
+      <form id="rsvp-form" class="space-y-4 max-w-md mx-auto">
+        <div>
+          <label class="block text-xs font-semibold text-[#482d6e] uppercase tracking-wider mb-1">Nombre Completo *</label>
+          <input type="text" id="guest-name" required placeholder="Ej. Familia Medina / Pedro Pérez" class="w-full px-4 py-2.5 rounded-xl border border-[#d4af37]/40 bg-white/90 text-sm text-[#3c235f] focus:outline-none focus:ring-2 focus:ring-[#7e5ea5]">
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-[#482d6e] uppercase tracking-wider mb-1">¿Asistirás? *</label>
+            <select id="guest-attendance" class="w-full px-4 py-2.5 rounded-xl border border-[#d4af37]/40 bg-white/90 text-sm text-[#3c235f] focus:outline-none focus:ring-2 focus:ring-[#7e5ea5]">
+              <option value="si">¡Sí, con mucho gusto!</option>
+              <option value="no">Lamentablemente no podré</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-[#482d6e] uppercase tracking-wider mb-1">Pases *</label>
+            <select id="guest-passes" class="w-full px-4 py-2.5 rounded-xl border border-[#d4af37]/40 bg-white/90 text-sm text-[#3c235f] focus:outline-none focus:ring-2 focus:ring-[#7e5ea5]">
+              <option value="1">1 Persona</option>
+              <option value="2" selected>2 Personas</option>
+              <option value="3">3 Personas</option>
+              <option value="4">4 Personas</option>
+              <option value="5+">Más de 5 personas</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-[#482d6e] uppercase tracking-wider mb-1">Mensaje para la Quinceañera (Opcional)</label>
+          <textarea id="guest-message" rows="2" placeholder="Escribe una dedicatoria o felicitación..." class="w-full px-4 py-2 rounded-xl border border-[#d4af37]/40 bg-white/90 text-sm text-[#3c235f] focus:outline-none focus:ring-2 focus:ring-[#7e5ea5]"></textarea>
+        </div>
+
+        <button type="submit" class="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-[#6e4b93] via-[#855ea9] to-[#5a3683] text-white font-semibold text-sm tracking-wide shadow-xl hover:opacity-95 transition flex items-center justify-center gap-2 cursor-pointer border border-[#d4af37]">
+          <i data-lucide="send" class="w-4 h-4 text-[#ffd700]"></i>
+          <span>Confirmar Asistencia por WhatsApp</span>
+        </button>
+      </form>
+
+      <!-- Confirmation message toast -->
+      <!-- <div id="rsvp-success" class="hidden mt-6 p-4 rounded-xl bg-[#eafaf1] border border-[#27ae60]/40 text-center">
+        <i data-lucide="check-circle" class="w-8 h-8 text-[#27ae60] mx-auto mb-1"></i>
+        <h4 class="font-serif-luxury font-bold text-[#1e8449]">¡Muchas Gracias!</h4>
+        <p class="text-xs text-[#1e8449]">Tu confirmación ha sido enviada con éxito. ¡Te esperamos para celebrar!</p>
+      </div>
+
+    </div> -->
+
+    <!-- Countdown Timer Section -->
+    <div class="glass-card rounded-2xl p-6 md:p-8 text-center mb-10 reveal active">
+      <p class="text-xs uppercase tracking-[0.3em] text-[#79579f] font-semibold mb-2">Faltan tan solo</p>
+      <h2 class="font-serif-luxury text-2xl text-[#43266b] mb-6">Cuenta Regresiva</h2>
+
+      <div class="grid grid-cols-4 gap-2 md:gap-4 max-w-md mx-auto">
+        <div class="bg-white/90 border border-[#d4af37]/30 rounded-xl p-3 shadow-sm">
+          <span id="days" class="block font-serif-luxury text-2xl md:text-3xl font-bold text-[#583780]">00</span>
+          <span class="text-[10px] uppercase tracking-wider text-[#8161a6] font-medium">Días</span>
+        </div>
+        <div class="bg-white/90 border border-[#d4af37]/30 rounded-xl p-3 shadow-sm">
+          <span id="hours" class="block font-serif-luxury text-2xl md:text-3xl font-bold text-[#583780]">00</span>
+          <span class="text-[10px] uppercase tracking-wider text-[#8161a6] font-medium">Horas</span>
+        </div>
+        <div class="bg-white/90 border border-[#d4af37]/30 rounded-xl p-3 shadow-sm">
+          <span id="minutes" class="block font-serif-luxury text-2xl md:text-3xl font-bold text-[#583780]">00</span>
+          <span class="text-[10px] uppercase tracking-wider text-[#8161a6] font-medium">Minutos</span>
+        </div>
+        <div class="bg-white/90 border border-[#d4af37]/30 rounded-xl p-3 shadow-sm">
+          <span id="seconds" class="block font-serif-luxury text-2xl md:text-3xl font-bold text-[#583780]">00</span>
+          <span class="text-[10px] uppercase tracking-wider text-[#8161a6] font-medium">Segundos</span>
+        </div>
+      </div>
+    </div>
+    <!-- Footer -->
+    <footer class="text-center text-xs text-[#7d5e9f] py-6">
+      <p class="font-script text-4xl text-[#523377] mb-1">Angie Siciliano</p>
+      <p class="font-serif-luxury tracking-widest uppercase text-[17px]">XV Años • Diciembre 2026</p>
+      <p class="font-serif-luxury tracking-widest  text-[12px]">Dios te bendiga</p>
+    </footer>
+
+  </main>
+
+
+  <!-- ========================================== -->
+  <!-- JAVASCRIPT LOGIC -->
+  <!-- ========================================== -->
+  <script>
+    // 1. Particle Canvas (Floating golden dust & lavender petals)
+    (function initParticles() {
+      const canvas = document.getElementById('particle-canvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      class Particle {
+        constructor() {
+          this.reset();
+        }
+        reset() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.size = Math.random() * 4 + 1.5;
+          this.speedX = Math.random() * 0.8 - 0.4;
+          this.speedY = Math.random() * 0.7 + 0.3;
+          this.alpha = Math.random() * 0.6 + 0.2;
+          this.color = Math.random() > 0.4 ? 'rgba(212, 175, 55,' : 'rgba(184, 165, 211,';
+          this.rotation = Math.random() * Math.PI * 2;
+          this.rotSpeed = (Math.random() - 0.5) * 0.02;
+        }
+        update() {
+          this.x += this.speedX;
+          this.y += this.speedY;
+          this.rotation += this.rotSpeed;
+          if (this.y > canvas.height || this.x < 0 || this.x > canvas.width) {
+            this.reset();
+            this.y = -10;
+          }
+        }
+        draw() {
+          ctx.save();
+          ctx.translate(this.x, this.y);
+          ctx.rotate(this.rotation);
+          ctx.beginPath();
+          ctx.arc(0, 0, this.size, 0, Math.PI * 2);
+          ctx.fillStyle = this.color + this.alpha + ')';
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = 'rgba(212, 175, 55, 0.4)';
+          ctx.fill();
+          ctx.restore();
+        }
+      }
+
+      for (let i = 0; i < 35; i++) {
+        particles.push(new Particle());
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+          p.update();
+          p.draw();
+        });
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+
+    // 2. Música de fondo: archivo ./assets/music.mp3
+    const bgAudio = document.getElementById('bg-audio');
+    const musicText = document.getElementById('music-text');
+    let isPlaying = false;
+
+    bgAudio.volume = 0.5;
+
+    function startAmbientMusic() {
+      const p = bgAudio.play();
+      if (p && typeof p.then === 'function') {
+        p.then(() => {
+          isPlaying = true;
+          musicText.textContent = 'Pausar';
+        }).catch((err) => {
+          console.warn('No se pudo reproducir la música:', err);
+          isPlaying = false;
+          musicText.textContent = 'Música';
+        });
+      } else {
+        isPlaying = true;
+        musicText.textContent = 'Pausar';
+      }
+    }
+
+    function stopMusic() {
+      bgAudio.pause();
+      isPlaying = false;
+      musicText.textContent = 'Música';
+    }
+
+    function toggleMusic() {
+      if (isPlaying) {
+        stopMusic();
+      } else {
+        startAmbientMusic();
+      }
+    }
+
+    document.getElementById('music-btn').addEventListener('click', toggleMusic);
+
+    // Campanilla corta al abrir el sobre (sintetizada)
+    let audioCtx = null;
+
+    function playTone(freq, time, duration, gainValue = 0.08) {
+      if (!audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, time);
+
+      gain.gain.setValueAtTime(0, time);
+      gain.gain.linearRampToValueAtTime(gainValue, time + 0.08);
+      gain.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(time);
+      osc.stop(time + duration);
+    }
+
+    function playChime() {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+
+        const now = audioCtx.currentTime;
+        const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51];
+        notes.forEach((freq, idx) => {
+          playTone(freq, now + idx * 0.1, 1.2, 0.12);
+        });
+      } catch (e) {
+        console.warn('No se pudo reproducir la campanilla:', e);
+      }
+    }
+
+    // 3. Envelope Interaction Logic
+    const envelope = document.getElementById('envelope');
+    const openBtn = document.getElementById('open-envelope-btn');
+    const envelopeSection = document.getElementById('envelope-section');
+    const invitationContent = document.getElementById('invitation-content');
+    const reopenBtn = document.getElementById('reopen-envelope-btn');
+
+    openBtn.addEventListener('click', () => {
+      playChime();
+
+      if (!isPlaying) {
+        startAmbientMusic();
+      }
+
+      envelope.classList.add('opened');
+
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 40,
+          spread: 60,
+          origin: { y: 0.6 },
+          colors: ['#d4af37', '#b8a5d3', '#7a5ba0', '#ffffff']
+        });
+      }
+
+      setTimeout(() => {
+        envelopeSection.style.opacity = '0';
+        setTimeout(() => {
+          envelopeSection.classList.add('hidden');
+          invitationContent.classList.remove('hidden');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          
+          if (window.lucide) {
+            lucide.createIcons();
+          }
+        }, 600);
+      }, 1400);
+    });
+
+    reopenBtn.addEventListener('click', () => {
+      invitationContent.classList.add('hidden');
+      envelopeSection.classList.remove('hidden');
+      envelopeSection.style.opacity = '1';
+      envelope.classList.remove('opened');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // 4. Live Countdown to Quinceañera Event Date (25 de diciembre de 2026, 2:00 PM)
+    function updateCountdown() {
+      const eventDate = new Date('2026-12-25T16:00:00').getTime();
+      const now = new Date().getTime();
+      const distance = eventDate - now;
+
+      if (distance > 0) {
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById('days').innerText = String(days).padStart(2, '0');
+        document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+        document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+        document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+      } else {
+        document.getElementById('days').innerText = "00";
+        document.getElementById('hours').innerText = "00";
+        document.getElementById('minutes').innerText = "00";
+        document.getElementById('seconds').innerText = "00";
+      }
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // 5. RSVP Submission Handling with WhatsApp integration and Confetti
+    const rsvpForm = document.getElementById('rsvp-form');
+    const rsvpSuccess = document.getElementById('rsvp-success');
+
+    rsvpForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('guest-name').value;
+      const attendance = document.getElementById('guest-attendance').value === 'si' ? '¡Sí asistiré!' : 'No podré asistir';
+      const passes = document.getElementById('guest-passes').value;
+      const message = document.getElementById('guest-message').value;
+
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 100,
+          spread: 80,
+          origin: { y: 0.6 },
+          colors: ['#d4af37', '#9370db', '#e6e6fa', '#ffd700']
+        });
+      }
+
+      rsvpSuccess.classList.remove('hidden');
+
+      const text = `¡Hola Angie Siciliano! Confirmo mi asistencia para tus 15 Años:%0A%0A👤 *Nombre:* ${encodeURIComponent(name)}%0A✨ *Asistencia:* ${encodeURIComponent(attendance)}%0A🎟️ *Pases:* ${encodeURIComponent(passes)}%0A💌 *Mensaje:* ${encodeURIComponent(message || '¡Felicidades!')}`;
+      
+      const whatsappUrl = `https://api.whatsapp.com/send?phone=50376766215&text=${text}`;
+      
+      setTimeout(() => {
+        window.open(whatsappUrl, '_blank');
+      }, 800);
+    });
+
+    // Auto-open if query parameter ?opened=true is present
+    if (new URLSearchParams(location.search).get("opened") === "true") {
+      envelopeSection.classList.add('hidden');
+      invitationContent.classList.remove('hidden');
+      invitationContent.style.opacity = '1';
+    }
+
+    // Initialize Lucide Icons on load
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    });
+  </script>
+</body>
+</html>
