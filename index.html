@@ -283,6 +283,16 @@
       opacity: 1;
       transform: translateY(0);
     }
+	  /* Fondo adaptado específicamente para móviles */
+    @media (max-width: 768px) {
+      body {
+        background-image: 
+          radial-gradient(circle at 10% 10%, rgba(212, 175, 55, 0.08) 0%, transparent 40%),
+          radial-gradient(circle at 90% 90%, rgba(184, 165, 211, 0.15) 0%, transparent 50%),
+          url('./assets/bg-mobile.png');
+        background-position: center bottom;
+      }
+    }
   </style>
 </head>
 <body class="relative min-h-screen text-[#3c2954] antialiased selection:bg-[#c4a9e6] selection:text-[#2d1b46]">
